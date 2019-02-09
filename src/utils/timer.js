@@ -2,6 +2,7 @@
  *
  * get delay with async
  *
+ * @async
  * @param {number} ms
  * @return {Promise<*>}
  */
