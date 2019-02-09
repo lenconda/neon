@@ -4,6 +4,11 @@
   "description": "🐙 File link scraper for every site",
   "main": "index.js",
   "scripts": {
+    "init-publisher": "node ./services/init.service.js",
+    "start-publisher": "pm2-docker start ./services/publisher.service.js --name neon-publisher",
+    "restart-publisher": "pm2-docker restart neon-publisher",
+    "start-workers": "pm2-docker start ./services/worker.service.js --name neon-worker -i 3 -x",
+    "start": "npm run init-publisher && npm run start-publisher && npm run start-workers",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
