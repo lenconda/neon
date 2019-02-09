@@ -1,5 +1,5 @@
 const loggers = require('log4js')
-const { APP_LOG_DIR } = require('../../config')
+const { APP_LOG_DIR } = require('../config')
 const { getRelativePath } = require('./directories')
 
 /**
