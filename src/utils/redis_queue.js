@@ -1,6 +1,5 @@
 const redis = require('redis')
 const { RDS_HOST, RDS_PORT }  = require('../config')
-const getLogger = require('../utils/logger')
 
 const _db = Symbol('db')
 const _has_element = Symbol('hasElement')
@@ -45,7 +44,7 @@ class RedisQueue {
    *
    * @async
    * @param {string} elem
-   * @return {Promise<string>>>}
+   * @return {Promise<string>>}
    */
   async enqueue (elem) {
     return new Promise(async (resolve, reject) => {
