@@ -18,7 +18,7 @@ module.exports = filePath => {
       },
       ruleFile: {
         type: 'dateFile',
-        filename: `${APP_LOG_DIR}/nitroproxy`,
+        filename: `${APP_LOG_DIR}/neon`,
         pattern: 'yyyy-MM-dd.log',
         maxLogSize: 1000 * 1024 * 1024,
         numBackups: 3,
