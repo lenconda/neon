@@ -3,6 +3,7 @@ const axios = require('axios')
 const { HEADERS,
   SEED_URL,
   MAX_DEPTH } = require('./config')
+const Producer = require('./producer')
 const getLogger = require('./utils/logger')
 const RedisQueue = require('./utils/redis_queue')
 const timer = require('./utils/timer')
@@ -14,6 +15,7 @@ axios.defaults.headers = HEADERS
 
 const _wait_queue = Symbol('symbolQueue')
 const _results_queue = Symbol('resultsQueue')
+const _producer = Symbol('producer')
 const _seed_url = Symbol('seedUrl')
 const _max_depth = Symbol('maxDepth')
 const _current_depth = Symbol('currentDepth')
@@ -27,6 +29,7 @@ class Publisher {
   constructor () {
     this[_wait_queue] = new RedisQueue('nitro_wait')
     this[_results_queue] = new RedisQueue('nitro_results')
+    this[_producer] = new Producer()
     this[_seed_url] = SEED_URL
     this[_max_depth] = MAX_DEPTH
     this[_current_depth] = 1
@@ -54,6 +57,7 @@ class Publisher {
           for (let link in links) {
             let prefixedUrl = new URLParser(link).prefixURL()
             if (!(await this[_results_queue].hasElement())) {
+              this[_producer].publish(prefixedUrl)
               this[_results_queue].enqueue(prefixedUrl)
               this[_wait_queue].enqueue(prefixedUrl)
               logger.info(`get: ${prefixedUrl}`)
