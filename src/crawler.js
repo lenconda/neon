@@ -1,7 +1,7 @@
 const axios = require('axios')
 const cheerio = require('cheerio')
 const { HEADERS } = require('./config')
-const getLogger = require('')
+const getLogger = require('./utils/logger')
 const uuid = require('uuid/v3')
 const InsertItemDataModel = require('./database/models/insert_item')
 const MongoDBConnection = require('./database/connection')
