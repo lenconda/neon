@@ -40,10 +40,20 @@ services:
     volumes:
       - ./.neon/logs:/app/logs
     environment:
-      SEED_URL: http://example.com
+      APP_SEED_URL: http://example.com
+      APP_MAX_DEPTH: 100
+      APP_LOG_DIR: /app/logs/
       MQ_HOST: rabbitmq
+      MQ_PORT: 5672
       MQ_LOGIN: neon
       MQ_PASSWORD: neon123
+      MQ_TIMEOUT: 10000
+      MQ_QUEUE: neon
       DB_HOST: mongo
+      DB_PORT: 27017
+      DB_NAME: neon
       RDS_HOST: redis
+      RDS_PORT: 6379
+      RDS_WAIT_QUEUE: neon-wait
+      RDS_RESULT_QUEUE: neon-results
     restart: always
