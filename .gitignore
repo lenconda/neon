@@ -39,3 +39,6 @@ test.js
 
 # configuration
 config.ini
+
+# neon files
+.neon

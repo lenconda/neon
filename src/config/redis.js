@@ -10,9 +10,11 @@ const RDS_PORT = process.env.RDS_PORT ||
   (config.get('redis', 'port') &&
     parseInt(config.get('redis', 'port'))) || 6379
 const RDS_WAIT_QUEUE = process.env.RDS_WAIT_QUEUE ||
-  config.get('redis', 'wait_queue')
+  config.get('redis', 'wait_queue') ||
+  'neon_wait'
 const RDS_RESULT_QUEUE = process.env.RDS_RESULT_QUEUE ||
-  config.get('redis', 'result_queue')
+  config.get('redis', 'result_queue') ||
+  'neon_results'
 
 module.exports.RDS_HOST = RDS_HOST
 module.exports.RDS_PORT = RDS_PORT

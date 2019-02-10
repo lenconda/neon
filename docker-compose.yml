@@ -1,0 +1,49 @@
+version: 1.0
+
+services:
+  mongo:
+    image: mongo:3.4
+    volumes:
+      - ./.neon/mongo/data/db:/data/db
+    restart: always
+    ports:
+      - 27017:27017
+    expose:
+      - 27017
+  redis:
+    image: redis:latest
+    volumes:
+      - ./.neon/redis/data:/data
+    ports:
+      - 6379:6379
+    expose:
+      - 6379
+    restart: always
+  rabbitmq:
+    image: rabbitmq:3-management
+    environment:
+      RABBITMQ_DEFAULT_USER: neon
+      RABBITMQ_DEFAULT_PASS: neon123
+    ports:
+      - 5672:5672
+      - 15672:15672
+    expose:
+      - 5672
+      - 15672
+    restart: always
+  neon:
+    build: .
+    depends_on:
+      - mongo
+      - redis
+      - rabbit
+    volumes:
+      - ./.neon/logs:/app/logs
+    environment:
+      SEED_URL: http://example.com
+      MQ_HOST: rabbitmq
+      MQ_LOGIN: neon
+      MQ_PASSWORD: neon123
+      DB_HOST: mongo
+      RDS_HOST: redis
+    restart: always

@@ -17,7 +17,7 @@ const MQ_TIMEOUT = (process.env.MQ_TIMEOUT && parseInt(process.env.MQ_TIMEOUT)) 
   (config.get('rabbitmq', 'timeout') &&
     parseInt(config.get('rabbitmq', 'timeout'))) || 10000
 const MQ_QUEUE = process.env.MQ_QUEUE ||
-  config.get('rabbitmq', 'queue') || 'nitroproxy'
+  config.get('rabbitmq', 'queue') || 'neon'
 
 // RabbitMQ configurations
 module.exports.MQ_HOST = MQ_HOST
