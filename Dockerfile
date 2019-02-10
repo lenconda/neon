@@ -17,12 +17,7 @@ RUN npm install pm2 -g
 # install dependencies
 RUN npm i
 
-# exec crontab
-CMD cron
-
-# exec clear
-CMD npm run clear-redis
-# exec init publisher
-CMD npm run init-publisher
-# npm start
-CMD npm start
+CMD cron \
+  && npm run clear-redis \
+  && npm run init-publisher \
+  && npm start
