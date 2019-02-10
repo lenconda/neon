@@ -34,6 +34,7 @@ class Producer {
    * @param {string} message
    */
   publish (message) {
+    console.log(MQ_QUEUE, message)
     this[_connection].publish(MQ_QUEUE, message)
     logger.info(`published ${message} to ${MQ_QUEUE} at ${MQ_HOST}:${MQ_PORT}`)
   }
