@@ -20,4 +20,4 @@ RUN npm i
 CMD cron \
   && npm run clear-redis \
   && npm run init-publisher \
-  && npm start
+  && pm2 start ecosystem.config.js
