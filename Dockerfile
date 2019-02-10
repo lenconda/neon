@@ -20,9 +20,9 @@ RUN npm i
 # exec crontab
 CMD cron
 
+# exec clear
+CMD npm run clear-redis
 # exec init publisher
 CMD npm run init-publisher
-# exec start workers
-CMD npm run start-worker
-# exec start publisher
-CMD npm run start-publisher
+# npm start
+CMD npm start

@@ -39,8 +39,8 @@ class Worker {
       .queue(MQ_QUEUE, queue => {
         queue.subscribe(message => {
           try {
-            let url = unescape(message)
-            logger.info(`[PID: ${this.pid}] consume '${url}' from ${MQ_QUEUE} at ${MQ_HOST}:${MQ_PORT}`)
+            let url = unescape(message.data)
+            logger.info(`[PID: ${process.pid}] consume '${url}' from ${MQ_QUEUE} at ${MQ_HOST}:${MQ_PORT}`)
             let crawler = new Crawler()
             crawler.crawl(url)
           } catch (e) {
