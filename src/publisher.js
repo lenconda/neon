@@ -79,6 +79,7 @@ class Publisher {
       try {
         logger.info(`init publisher with PID: ${process.pid}`)
         await this[_wait_queue].enqueue(this[_seed_url])
+        await timer.delay(1000)
         resolve()
       } catch (e) {
         reject(e)
