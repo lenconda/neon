@@ -4,6 +4,7 @@
   "description": "🐙 File link scraper for every site",
   "main": "index.js",
   "scripts": {
+    "clear-redis": "node ./services/redis.clear.service.js",
     "init-publisher": "node ./services/init.service.js",
     "start-publisher": "pm2-docker start ./services/publisher.service.js --name neon-publisher",
     "restart-publisher": "pm2-docker restart neon-publisher",

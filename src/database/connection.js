@@ -35,4 +35,4 @@ class MongoDBConnection {
 
 }
 
-module.exports.DBModel = MongoDBConnection
+module.exports = MongoDBConnection

@@ -1,6 +1,6 @@
 const { URL } = require('url')
 const normalizeUrl = require('normalize-url')
-const { SEED_URL } = require('../config')
+const { APP_SEED_URL } = require('../config')
 
 const _current_url = Symbol('currentUrl')
 
@@ -46,7 +46,7 @@ class URLParser {
     let url = this[_current_url]
     let protocolTest = /^http:\/\/|^https:\/\//
     if (protocolTest.test(url)) {
-      let seedUrlObj = new URL(normalizeUrl(SEED_URL))
+      let seedUrlObj = new URL(normalizeUrl(APP_SEED_URL))
       let urlObj = new URL(normalizeUrl(url))
       if (seedUrlObj.origin === urlObj.origin) return true
       else return false
@@ -62,9 +62,9 @@ class URLParser {
    *
    * @return {string}
    */
-  prefixURL () {
+  prefixURL (parentUrl) {
     let url = this[_current_url]
-    let seedUrlObj = new URL(normalizeUrl(SEED_URL))
+    let seedUrlObj = new URL(normalizeUrl(APP_SEED_URL))
     let parentUrlObj = new URL(normalizeUrl(parentUrl))
     let protocolTest = /^http:\/\/|^https:\/\//
     if (protocolTest.test(url)) {

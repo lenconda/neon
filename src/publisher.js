@@ -1,8 +1,11 @@
 const cheerio = require('cheerio')
 const axios = require('axios')
-const { HEADERS,
-  SEED_URL,
-  MAX_DEPTH } = require('./config')
+const {
+  HEADERS,
+  APP_SEED_URL,
+  APP_MAX_DEPTH,
+  RDS_WAIT_QUEUE,
+  RDS_RESULT_QUEUE } = require('./config')
 const Producer = require('./producer')
 const getLogger = require('./utils/logger')
 const RedisQueue = require('./utils/redis_queue')
@@ -27,11 +30,11 @@ class Publisher {
    * @constructor
    */
   constructor () {
-    this[_wait_queue] = new RedisQueue('nitro_wait')
-    this[_results_queue] = new RedisQueue('nitro_results')
+    this[_wait_queue] = new RedisQueue(RDS_WAIT_QUEUE)
+    this[_results_queue] = new RedisQueue(RDS_RESULT_QUEUE)
     this[_producer] = new Producer()
-    this[_seed_url] = SEED_URL
-    this[_max_depth] = MAX_DEPTH
+    this[_seed_url] = APP_SEED_URL
+    this[_max_depth] = APP_MAX_DEPTH
     this[_current_depth] = 1
   }
 
@@ -44,8 +47,11 @@ class Publisher {
   async [_bfs_traverse] () {
     while (this[_current_depth] < this[_max_depth]) {
       try {
-        for (let i = 0; i < this[_wait_queue].content().length; i++) {
+        await timer.delay(1000)
+        let { length } = await this[_wait_queue].content()
+        for (let i = 0; i < length; i++) {
           let currentUrl = await this[_wait_queue].dequeue()
+          logger.info(`start BFS from ${currentUrl}`)
           await timer.delay(1000)
           let { data } = await axios.get(currentUrl)
           let $ = cheerio.load(data)
@@ -54,13 +60,13 @@ class Publisher {
             .map((value, index) => value.attribs['href'])
             .filter((value, index) => new URLParser(value).isLegalURL())
             .filter((value, index) => new URLParser(value).isInnerURL())
-          for (let link in links) {
-            let prefixedUrl = new URLParser(link).prefixURL()
-            if (!(await this[_results_queue].hasElement())) {
+          for (let link of links) {
+            let prefixedUrl = new URLParser(link).prefixURL(currentUrl)
+            if (!(await this[_results_queue].hasElement(prefixedUrl))) {
               this[_producer].publish(prefixedUrl)
+              await timer.delay(1000)
               this[_results_queue].enqueue(prefixedUrl)
               this[_wait_queue].enqueue(prefixedUrl)
-              logger.info(`get: ${prefixedUrl}`)
             }
           }
         }
@@ -74,25 +80,6 @@ class Publisher {
 
   /**
    *
-   * enqueue seed url
-   *
-   * @return {Promise<any>}
-   */
-  async init () {
-    return new Promise(async (resolve, reject) => {
-      try {
-        logger.info(`init publisher with PID: ${process.pid}`)
-        await this[_wait_queue].enqueue(this[_seed_url])
-        await timer.delay(1000)
-        resolve()
-      } catch (e) {
-        reject(e)
-      }
-    })
-  }
-
-  /**
-   *
    * start the publisher
    *
    * @return {Promise<void>}
@@ -101,7 +88,6 @@ class Publisher {
     logger.info(`start publisher with PID: ${process.pid}`)
     await this[_bfs_traverse]()
     logger.info(`finish process`)
-    process.exit(0)
   }
 
 }

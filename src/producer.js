@@ -34,11 +34,8 @@ class Producer {
    * @param {string} message
    */
   publish (message) {
-    this[_connection]
-      .on('ready', () => {
-        this[_connection].publish(MQ_QUEUE, message)
-        logger.info(`published ${message} to ${MQ_QUEUE} at ${MQ_HOST}:${MQ_PORT}`)
-      })
+    this[_connection].publish(MQ_QUEUE, message)
+    logger.info(`published ${message} to ${MQ_QUEUE} at ${MQ_HOST}:${MQ_PORT}`)
   }
 
   /**

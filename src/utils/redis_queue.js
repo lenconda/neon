@@ -51,15 +51,12 @@ class RedisQueue {
         this[_db].rpush(this[_queue_name], elem, (err, res) => {
           if (err) {
             reject(err)
-            this.quit()
           } else {
             resolve(elem)
-            this.quit()
           }
         })
       } else {
         resolve(elem)
-        this.quit()
       }
     })
   }
@@ -76,10 +73,8 @@ class RedisQueue {
       this[_db].blpop(this[_queue_name], 0, (err, res) => {
         if (err) {
           reject(err)
-          this.quit()
         } else {
-          resolve(res)
-          this.quit()
+          resolve(res.pop())
         }
       })
     })
@@ -96,10 +91,8 @@ class RedisQueue {
       this[_db].lrange(this[_queue_name], 0, -1, (err, res) => {
         if (err) {
           reject(err)
-          this.quit()
         } else {
           resolve(res)
-          this.quit()
         }
       })
     })

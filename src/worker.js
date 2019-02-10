@@ -26,7 +26,6 @@ class Worker {
       password: MQ_PASSWORD,
       connectionTimeout: MQ_TIMEOUT,
     })
-    logger.info(`start worker with PID: ${process.pid}`)
   }
 
   /**
@@ -58,6 +57,7 @@ class Worker {
    * @private
    */
   start () {
+    logger.info(`start worker with PID: ${process.pid}`)
     this[_connection].on('ready', () => {
       this[_consume]()
     })

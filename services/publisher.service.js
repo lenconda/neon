@@ -1,3 +1,4 @@
-const { PublisherInstance } = require('../src')
+const { Publisher } = require('../src')
 
-PublisherInstance.start()
+const publisher = new Publisher()
+publisher.start()
