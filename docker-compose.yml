@@ -36,7 +36,7 @@ services:
     depends_on:
       - mongo
       - redis
-      - rabbit
+      - rabbitmq
     volumes:
       - ./.neon/logs:/app/logs
     environment:
