@@ -26,7 +26,7 @@ class Worker {
       password: MQ_PASSWORD,
       connectionTimeout: MQ_TIMEOUT,
     })
-    logger.info(`start worker at ${Date.parse(new Date())} with PID: ${process.pid}`)
+    logger.info(`start worker with PID: ${process.pid}`)
   }
 
   /**

@@ -7,6 +7,7 @@ const InsertItemDataModel = require('./database/models/insert_item')
 const MongoDBConnection = require('./database/connection')
 
 axios.defaults.timeout = 60000
+axios.defaults.headers = HEADERS
 const logger = getLogger(__filename)
 
 const _connection = Symbol('connection')
@@ -48,8 +49,7 @@ class Crawler {
    */
   async crawl (url) {
     try {
-      let headers = HEADERS
-      let { data } = await axios.get(url, { headers })
+      let { data } = await axios.get(url)
       let $ = cheerio.load(data)
       let content = $('body').text().replace(/\s+/g, '') || null
       let insertedItems = $('a[href!=""]')

@@ -2,7 +2,6 @@ const redis = require('redis')
 const { RDS_HOST, RDS_PORT }  = require('../config')
 
 const _db = Symbol('db')
-const _has_element = Symbol('hasElement')
 const _queue_name = Symbol('queueName')
 
 class RedisQueue {
@@ -26,9 +25,8 @@ class RedisQueue {
    * @async
    * @param {string} elem
    * @return {Promise<boolean>}
-   * @private
    */
-  async [_has_element] (elem) {
+  async hasElement (elem) {
     return new Promise((resolve, reject) => {
       this[_db].sadd(`${this[_queue_name]}_set`, elem, (err, res) => {
         if (err) reject(err.toString())
@@ -48,13 +46,21 @@ class RedisQueue {
    */
   async enqueue (elem) {
     return new Promise(async (resolve, reject) => {
-      let exist = await this[_has_element](elem)
+      let exist = await this.hasElement(elem)
       if (exist) {
         this[_db].rpush(this[_queue_name], elem, (err, res) => {
-          if (err) reject(err.toString())
-          resolve(elem)
+          if (err) {
+            reject(err)
+            this.quit()
+          } else {
+            resolve(elem)
+            this.quit()
+          }
         })
-      } else resolve(elem)
+      } else {
+        resolve(elem)
+        this.quit()
+      }
     })
   }
 
@@ -68,8 +74,33 @@ class RedisQueue {
   async dequeue () {
     return new Promise((resolve, reject) => {
       this[_db].blpop(this[_queue_name], 0, (err, res) => {
-        if (err) reject(err.toString())
-        resolve(res)
+        if (err) {
+          reject(err)
+          this.quit()
+        } else {
+          resolve(res)
+          this.quit()
+        }
+      })
+    })
+  }
+
+  /**
+   *
+   * get queue content
+   *
+   * @return {Promise<string[]>}
+   */
+  async content () {
+    return new Promise((resolve, reject) => {
+      this[_db].lrange(this[_queue_name], 0, -1, (err, res) => {
+        if (err) {
+          reject(err)
+          this.quit()
+        } else {
+          resolve(res)
+          this.quit()
+        }
       })
     })
   }
