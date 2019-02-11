@@ -30,7 +30,6 @@
     "async": "^2.6.1",
     "axios": "^0.18.0",
     "cheerio": "^1.0.0-rc.2",
-    "configparser": "^0.2.6",
     "lodash": "^4.17.11",
     "log4js": "^4.0.2",
     "modern-random-ua": "^1.0.3",
