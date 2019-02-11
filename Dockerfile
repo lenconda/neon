@@ -17,13 +17,6 @@ RUN npm install pm2 -g
 # install dependencies
 RUN npm i
 
-RUN npm run clear-redis
-RUN npm run init-publisher
-
-CMD cron \
-  && pm2 start publisher.config.js \
-  && pm2-docker start workers.config.js
-#  && pm2 stop neon-publisher \
-#  && npm run clear-redis \
-#  && npm run init-publisher \
-#  && pm2 start neon-publisher
+RUN chmod +x ./scheduler.sh
+RUN chmod +x ./entrypoint.sh
+ENTRYPOINT ["./entrypoint.sh"]

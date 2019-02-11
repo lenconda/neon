@@ -5,6 +5,8 @@ const {
   RDS_WAIT_QUEUE,
   RDS_RESULT_QUEUE }  = require('../src/config')
 
+console.log(RDS_HOST, RDS_PORT)
+
 const db = redis.createClient({
   host: RDS_HOST,
   port: RDS_PORT
