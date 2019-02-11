@@ -1,3 +1,5 @@
+const path = require('path')
+
 const APP_SEED_URL = process.env.APP_SEED_URL || 'http://www.example.com'
 const APP_MAX_DEPTH = (process.env.APP_MAX_DEPTH &&
   parseInt(process.env.APP_MAX_DEPTH)) || 100
