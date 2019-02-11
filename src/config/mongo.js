@@ -1,20 +1,9 @@
-const ConfigParser = require('configparser')
-const path = require('path')
-
-const config = new ConfigParser()
-config.read(path.join(__dirname, '../../config.ini'))
-
-const DB_HOST = process.env.DB_HOST ||
-  config.get('database', 'host') || 'localhost'
-const DB_PORT = (process.env.DB_PORT && parseInt(process.env.DB_PORT)) ||
-  (config.get('database', 'port') &&
-    parseInt(config.get('database', 'port'))) || 27017
-const DB_USER = process.env.DB_USER ||
-  config.get('database', 'user') || null
-const DB_PASSWORD = process.env.DB_PASSWORD ||
-  config.get('database', 'password') || null
-const DB_NAME = process.env.DB_NAME ||
-  config.get('database', 'name') || 'neon'
+const DB_HOST = process.env.DB_HOST || 'mongo'
+const DB_PORT = (process.env.DB_PORT && parseInt(process.env.DB_PORT))
+  || 27017
+const DB_USER = process.env.DB_USER || null
+const DB_PASSWORD = process.env.DB_PASSWORD || null
+const DB_NAME = process.env.DB_NAME || 'neon'
 
 // MongoDB configurations
 module.exports.DB_HOST = DB_HOST
