@@ -61,7 +61,8 @@ class Publisher {
             .filter((value, index) => new URLParser(value).isLegalURL())
             .filter((value, index) => new URLParser(value).isInnerURL())
           for (let link of links) {
-            let prefixedUrl = new URLParser(link).prefixURL(currentUrl)
+            let item = new URLParser(link)
+            let prefixedUrl = item.prefixURL(currentUrl)
             if (!(await this[_results_queue].hasElement(prefixedUrl))) {
               this[_producer].publish(prefixedUrl)
               await timer.delay(1000)
@@ -72,7 +73,7 @@ class Publisher {
         }
         this[_current_depth] += 1
       } catch (e) {
-        logger.error(e.toString())
+        logger.error(e)
         continue
       }
     }

@@ -4,8 +4,8 @@ const {
   RDS_PORT,
   RDS_WAIT_QUEUE,
   RDS_RESULT_QUEUE }  = require('../src/config')
-
-console.log(RDS_HOST, RDS_PORT)
+const getLogger = require('../src/utils/logger')
+const logger = getLogger(__filename)
 
 const db = redis.createClient({
   host: RDS_HOST,
@@ -15,6 +15,7 @@ const db = redis.createClient({
 const del = async name => {
   return new Promise(resolve => {
     db.del(name, () => {
+      logger.info(`deleted ${name}`)
       resolve()
     })
   })

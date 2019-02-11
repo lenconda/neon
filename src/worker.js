@@ -25,7 +25,7 @@ class Worker {
       login: MQ_LOGIN,
       password: MQ_PASSWORD,
       connectionTimeout: MQ_TIMEOUT,
-    })
+    }, { reconnect: false })
   }
 
   /**
@@ -39,7 +39,7 @@ class Worker {
       .queue(MQ_QUEUE, queue => {
         queue.subscribe(message => {
           try {
-            let url = unescape(message.data)
+            let url = encodeURI(unescape(message.data))
             logger.info(`[PID: ${process.pid}] consume '${url}' from ${MQ_QUEUE} at ${MQ_HOST}:${MQ_PORT}`)
             let crawler = new Crawler()
             crawler.crawl(url)

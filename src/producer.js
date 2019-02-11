@@ -7,6 +7,8 @@ const {
   MQ_TIMEOUT,
   MQ_QUEUE } = require('./config')
 const getLogger = require('./utils/logger')
+const events = require('events')
+const emitter = new events.EventEmitter()
 
 const _connection = Symbol('connection')
 const logger = getLogger(__filename)
@@ -25,6 +27,13 @@ class Producer {
       password: MQ_PASSWORD,
       connectionTimeout: MQ_TIMEOUT,
     }, {reconnect: false})
+    this[_connection]
+      .on('ready', () => {
+        emitter.on('publish', message => {
+          this[_connection].publish(MQ_QUEUE, decodeURI(message), { contentEncoding: 'utf-8' })
+          logger.info(`published ${decodeURI(message)} to ${MQ_QUEUE} at ${MQ_HOST}:${MQ_PORT}`)
+        })
+      })
   }
 
   /**
@@ -34,9 +43,7 @@ class Producer {
    * @param {string} message
    */
   publish (message) {
-    console.log(MQ_QUEUE, message)
-    this[_connection].publish(MQ_QUEUE, message)
-    logger.info(`published ${message} to ${MQ_QUEUE} at ${MQ_HOST}:${MQ_PORT}`)
+    emitter.emit('publish', message)
   }
 
   /**
