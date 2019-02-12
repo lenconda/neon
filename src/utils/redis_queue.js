@@ -30,7 +30,7 @@ class RedisQueue {
     return new Promise((resolve, reject) => {
       this[_db].sadd(`${this[_queue_name]}_set`, elem, (err, res) => {
         if (err) reject(err.toString())
-        if (res) resolve(true)
+        if (!res) resolve(true)
         else resolve(false)
       })
     })
@@ -46,18 +46,12 @@ class RedisQueue {
    */
   async enqueue (elem) {
     return new Promise(async (resolve, reject) => {
-      let exist = await this.hasElement(elem)
-      if (exist) {
+      if (!(await this.hasElement(elem))) {
         this[_db].rpush(this[_queue_name], elem, (err, res) => {
-          if (err) {
-            reject(err)
-          } else {
-            resolve(elem)
-          }
+          if (err) { reject(err)
+          } else { resolve(elem) }
         })
-      } else {
-        resolve(elem)
-      }
+      } else resolve(elem)
     })
   }
 
@@ -71,11 +65,8 @@ class RedisQueue {
   async dequeue () {
     return new Promise((resolve, reject) => {
       this[_db].blpop(this[_queue_name], 0, (err, res) => {
-        if (err) {
-          reject(err)
-        } else {
-          resolve(res.pop())
-        }
+        if (err) reject(err)
+        else resolve(res.pop())
       })
     })
   }
@@ -89,11 +80,8 @@ class RedisQueue {
   async content () {
     return new Promise((resolve, reject) => {
       this[_db].lrange(this[_queue_name], 0, -1, (err, res) => {
-        if (err) {
-          reject(err)
-        } else {
-          resolve(res)
-        }
+        if (err) reject(err)
+        else resolve(res)
       })
     })
   }

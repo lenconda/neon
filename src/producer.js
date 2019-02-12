@@ -30,8 +30,8 @@ class Producer {
     this[_connection]
       .on('ready', () => {
         emitter.on('publish', message => {
-          this[_connection].publish(MQ_QUEUE, decodeURI(message), { contentEncoding: 'utf-8' })
-          logger.info(`published ${decodeURI(message)} to ${MQ_QUEUE} at ${MQ_HOST}:${MQ_PORT}`)
+          this[_connection].publish(MQ_QUEUE, message, { contentEncoding: 'utf-8' })
+          logger.info(`published ${encodeURI(message)} to ${MQ_QUEUE} at ${MQ_HOST}:${MQ_PORT}`)
         })
       })
   }
