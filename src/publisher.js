@@ -42,6 +42,7 @@ class Publisher {
    *
    * BFS traverse
    *
+   * @async
    * @return {Promise<void>}
    */
   async [_bfs_traverse] () {
@@ -83,6 +84,7 @@ class Publisher {
    *
    * start the publisher
    *
+   * @async
    * @return {Promise<void>}
    */
   async start () {

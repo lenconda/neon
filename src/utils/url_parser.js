@@ -60,6 +60,7 @@ class URLParser {
    *
    * return a prefixed url
    *
+   * @param {string} parentUrl
    * @return {string}
    */
   prefixURL (parentUrl) {

@@ -14,6 +14,9 @@ const _database = Symbol('database')
 
 class MongoDBConnection {
 
+  /**
+   * @constructor
+   */
   constructor () {
     let authorize = (DB_USER && DB_PASSWORD) ?
       `${DB_USER}:${DB_PASSWORD}@` : ''
@@ -21,6 +24,9 @@ class MongoDBConnection {
     this[_database]
   }
 
+  /**
+   * connect to MongoDB
+   */
   connect () {
     this[_database] =
       mongoose
@@ -29,6 +35,9 @@ class MongoDBConnection {
         .catch(err => logger.error(err.message))
   }
 
+  /**
+   * disconnect from MongoDB
+   */
   disconnect () {
     mongoose.disconnect()
   }
