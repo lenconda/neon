@@ -11,6 +11,7 @@ const Crawler = require('./crawler')
 
 const _connection = Symbol('connection')
 const _consume = Symbol('consume')
+const _crawler = Symbol('crawler')
 const logger = getLogger(__filename)
 
 class Worker {
@@ -26,6 +27,7 @@ class Worker {
       password: MQ_PASSWORD,
       connectionTimeout: MQ_TIMEOUT,
     }, { reconnect: false })
+    this[_crawler] = new Crawler()
   }
 
   /**
@@ -41,8 +43,7 @@ class Worker {
           try {
             let url = encodeURI(unescape(message.data))
             logger.info(`[PID: ${process.pid}] consume '${url}' from ${MQ_QUEUE} at ${MQ_HOST}:${MQ_PORT}`)
-            let crawler = new Crawler()
-            crawler.crawl(url)
+            this[_crawler].crawl(url)
           } catch (e) {
             logger.error(e.toString())
           }

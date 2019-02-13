@@ -27,13 +27,15 @@ class Crawler {
    *
    * insert item into MongoDB
    *
-   * @param {string} item
+   * @param {string} items
    * @private
    */
-  [_insert_to_database] (item) {
+  [_insert_to_database] (items) {
     try {
-      logger.info(`get ${item.filename} at ${item.url}`)
-      InsertItemDataModel.insertMany([item])
+      InsertItemDataModel.insertMany(items, (err, res) => {
+        if (err) logger.error(err.toString())
+        else logger.info(`inserted ${res.length} files`)
+      })
     } catch (e) {
       logger.error(e.toString())
     }
@@ -54,23 +56,21 @@ class Crawler {
       let content = $('body').text().replace(/\s+/g, '') || null
       let insertedItems = $('a[href!=""]')
         .toArray()
+        .map((value, index) => value.attribs['href'])
         .filter((value, index) =>
           /^.*?\.(pdf|docx|doc|rtf|mobi|azw3|epub)$/.test(value))
         .map((value, index) => {
           return {
             uuid: uuid(value, uuid.URL),
             url: value,
-            filename: decodeURI(url).split('/').pop(),
+            filename: decodeURI(value).split('/').pop(),
             content,
             created_at: Date.parse(new Date())
           }
         })
-      InsertItemDataModel
-        .insertMany(insertedItems)
-      this[_connection].disconnect()
+      if (insertedItems.length > 0) this[_insert_to_database](insertedItems)
     } catch (e) {
       logger.error(e.toString())
-      this[_connection].disconnect()
     }
   }
 
