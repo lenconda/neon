@@ -40,7 +40,7 @@ services:
     volumes:
       - ./.neon/logs:/app/logs
     environment:
-      APP_SEED_URL: http://example.com
+      APP_SEED_URL: https://bookset.me
       APP_MAX_DEPTH: 100
       APP_LOG_DIR: /app/logs/
       MQ_HOST: rabbitmq

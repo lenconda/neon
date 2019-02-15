@@ -41,7 +41,7 @@ class Worker {
       .queue(MQ_QUEUE, queue => {
         queue.subscribe(message => {
           try {
-            let url = encodeURI(unescape(message.data))
+            let url = encodeURI(encodeURI(unescape(message.data)))
             logger.info(`[PID: ${process.pid}] consume '${url}' from ${MQ_QUEUE} at ${MQ_HOST}:${MQ_PORT}`)
             this[_crawler].crawl(url)
           } catch (e) {

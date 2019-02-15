@@ -1,0 +1,8 @@
+deb http://mirrors.zju.edu.cn/ubuntu bionic main universe restricted multiverse
+deb http://mirrors.zju.edu.cn/ubuntu bionic-security main universe restricted multiverse
+deb http://mirrors.zju.edu.cn/ubuntu bionic-updates main universe restricted multiverse
+deb http://mirrors.zju.edu.cn/ubuntu bionic-backports main universe restricted multiverse
+deb-src http://mirrors.zju.edu.cn/ubuntu bionic main universe restricted multiverse
+deb-src http://mirrors.zju.edu.cn/ubuntu bionic-security main universe restricted multiverse
+deb-src http://mirrors.zju.edu.cn/ubuntu bionic-updates main universe restricted multiverse
+deb-src http://mirrors.zju.edu.cn/ubuntu bionic-backports main universe restricted multiverse

@@ -62,7 +62,7 @@ class Crawler {
         .map((value, index) => {
           return {
             uuid: uuid(value, uuid.URL),
-            url: value,
+            url: encodeURI(value),
             filename: decodeURI(value).split('/').pop(),
             content,
             created_at: Date.parse(new Date())
