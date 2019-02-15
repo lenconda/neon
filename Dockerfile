@@ -12,6 +12,7 @@ RUN xz -d node-v10.15.1-linux-x64.tar.xz
 RUN tar xvf node-v10.15.1-linux-x64.tar
 RUN mv node-v10.15.1-linux-x64 node
 ENV PATH="/opt/node/bin:${PATH}"
+RUN rm -f node-v10.15.1-linux-x64.tar
 
 # copy app files
 WORKDIR /app
@@ -29,6 +30,5 @@ RUN npm install pm2 -g
 # install dependencies
 RUN npm i
 
-RUN chmod +x ./scheduler.sh
 RUN chmod +x ./entrypoint.sh
 ENTRYPOINT ["./entrypoint.sh"]

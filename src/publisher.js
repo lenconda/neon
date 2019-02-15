@@ -67,8 +67,8 @@ class Publisher {
             if (!(await this[_results_queue].hasElement(prefixedUrl))) {
               this[_producer].publish(prefixedUrl)
               await timer.delay(1000)
-              this[_results_queue].enqueue(prefixedUrl)
-              this[_wait_queue].enqueue(prefixedUrl)
+              this[_results_queue].enqueue(encodeURI(encodeURI(prefixedUrl)))
+              this[_wait_queue].enqueue(encodeURI(encodeURI(prefixedUrl)))
             }
           }
         }
