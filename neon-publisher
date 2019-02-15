@@ -1,1 +1,0 @@
-15,45 * * * * pm2 restart neon-publisher

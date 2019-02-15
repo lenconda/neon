@@ -7,4 +7,4 @@ cron \
 && pm2 start workers.config.js \
 && sleep 10s \
 && pm2 start publisher.config.js \
-&& tail -f keepalive
+&& pm2-docker start ./keepalive.js
