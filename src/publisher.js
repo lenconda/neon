@@ -4,12 +4,9 @@ const axios = require('axios')
 const {
   HEADERS,
   APP_SEED_URL,
-  APP_MAX_DEPTH,
-  RDS_WAIT_QUEUE,
-  RDS_RESULT_QUEUE } = require('./config')
+  APP_MAX_DEPTH } = require('./config')
 const Producer = require('./producer')
 const getLogger = require('./utils/logger')
-const RedisQueue = require('./utils/redis_queue')
 const timer = require('./utils/timer')
 const URLParser = require('./utils/url_parser')
 

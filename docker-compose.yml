@@ -10,15 +10,6 @@ services:
       - 27017:27017
     expose:
       - 27017
-#  redis:
-#    image: redis:latest
-#    volumes:
-#      - ./.neon/redis/data:/data
-#    ports:
-#      - 6379:6379
-#    expose:
-#      - 6379
-#    restart: always
   rabbitmq:
     image: rabbitmq:3-management
     environment:
@@ -41,7 +32,7 @@ services:
     environment:
       MODE: init
       APP_SEED_URL: http://www.allitebooks.com
-      APP_MAX_DEPTH: 100
+      APP_MAX_DEPTH: -1
       APP_LOG_DIR: /app/logs/
       MQ_HOST: rabbitmq
       MQ_PORT: 5672
@@ -52,8 +43,4 @@ services:
       DB_HOST: mongo
       DB_PORT: 27017
       DB_NAME: neon
-      RDS_HOST: redis
-      RDS_PORT: 6379
-      RDS_WAIT_QUEUE: neon-wait
-      RDS_RESULT_QUEUE: neon-results
     restart: always
