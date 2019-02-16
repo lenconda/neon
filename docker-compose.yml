@@ -40,6 +40,7 @@ services:
     volumes:
       - ./.neon/logs:/app/logs
     environment:
+      MODE: init
       APP_SEED_URL: http://www.allitebooks.com
       APP_MAX_DEPTH: 100
       APP_LOG_DIR: /app/logs/
