@@ -72,8 +72,7 @@ class Publisher {
           for (let link of links) {
             let item = new URLParser(link)
             let prefixedUrl = decodeURI(decodeURI(item.prefixURL(currentUrl)))
-            if (!this[_results_queue].includes(prefixedUrl) &&
-              !this[_wait_queue].includes(prefixedUrl)) {
+            if (!this[_results_queue].includes(prefixedUrl)) {
               this[_producer].publish(prefixedUrl)
               await timer.delay(1000)
               this[_results_queue].push(encodeURI(encodeURI(prefixedUrl)))
