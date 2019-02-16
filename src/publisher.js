@@ -31,8 +31,8 @@ class Publisher {
    * @constructor
    */
   constructor () {
-    let wait_queue = fs.readFileSync('../.neon/app/wait.queue', { encoding: 'utf-8' })
-    let results_queue = fs.readFileSync('../.neon/app/results.queue', { encoding: 'utf-8' })
+    let wait_queue = fs.readFileSync('./.neon/app/wait.queue', { encoding: 'utf-8' })
+    let results_queue = fs.readFileSync('./.neon/app/results.queue', { encoding: 'utf-8' })
     this[_wait_queue] = JSON.parse(wait_queue)
     this[_results_queue] = JSON.parse(results_queue)
     this[_producer] = new Producer()
@@ -40,9 +40,9 @@ class Publisher {
     this[_max_depth] = APP_MAX_DEPTH
     this[_current_depth] = 1
     process.on('SIGINT', () => {
-      fs.writeFileSync('../.neon/app/wait.queue',
+      fs.writeFileSync('./.neon/app/wait.queue',
         JSON.stringify(this[_wait_queue]), { encoding: 'utf-8' })
-      fs.writeFileSync('../.neon/app/results.queue',
+      fs.writeFileSync('./.neon/app/results.queue',
         JSON.stringify(this[_results_queue]), { encoding: 'utf-8' })
       process.exit(0)
     })
