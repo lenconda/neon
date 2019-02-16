@@ -9,8 +9,7 @@ then
   && echo "[]" > ./.neon/app/results.queue
 fi
 
-npm run init-publisher \
-&& sleep 10s \
+sleep 10s \
 && pm2 start workers.config.js \
 && sleep 10s \
 && pm2 start publisher.config.js \

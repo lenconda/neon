@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "clear-redis": "node ./services/redis.clear.service.js",
-    "init-publisher": "node ./services/init.service.js",
     "start": "pm2-docker start publisher.config.js && pm2-docker start workers.config.js",
     "restart-publisher": "pm2 restart neon-publisher",
     "test": "echo \"Error: no test specified\" && exit 1"
