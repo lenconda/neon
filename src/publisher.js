@@ -1,4 +1,5 @@
 const cheerio = require('cheerio')
+const fs = require('fs')
 const axios = require('axios')
 const {
   HEADERS,
@@ -30,12 +31,21 @@ class Publisher {
    * @constructor
    */
   constructor () {
-    this[_wait_queue] = new RedisQueue(RDS_WAIT_QUEUE)
-    this[_results_queue] = new RedisQueue(RDS_RESULT_QUEUE)
+    let wait_queue = fs.readFileSync('../.neon/app/wait.queue', { encoding: 'utf-8' })
+    let results_queue = fs.readFileSync('../.neon/app/results.queue', { encoding: 'utf-8' })
+    this[_wait_queue] = JSON.parse(wait_queue)
+    this[_results_queue] = JSON.parse(results_queue)
     this[_producer] = new Producer()
     this[_seed_url] = APP_SEED_URL
     this[_max_depth] = APP_MAX_DEPTH
     this[_current_depth] = 1
+    process.on('SIGINT', () => {
+      fs.writeFileSync('../.neon/app/wait.queue',
+        JSON.stringify(this[_wait_queue]), { encoding: 'utf-8' })
+      fs.writeFileSync('../.neon/app/results.queue',
+        JSON.stringify(this[_results_queue]), { encoding: 'utf-8' })
+      process.exit(0)
+    })
   }
 
   /**
@@ -46,12 +56,13 @@ class Publisher {
    * @return {Promise<void>}
    */
   async [_bfs_traverse] () {
-    while (this[_current_depth] < this[_max_depth]) {
+    while (this[_max_depth] === -1 ||
+      (this[_current_depth] < this[_max_depth])) {
       try {
         await timer.delay(1000)
-        let { length } = await this[_wait_queue].content()
-        for (let i = 0; i < length; i++) {
-          let currentUrl = await this[_wait_queue].dequeue()
+        // let { length } = await this[_wait_queue].content()
+        for (let i = 0; i < this[_wait_queue].length; i++) {
+          let currentUrl = this[_wait_queue].shift()
           logger.info(`start BFS from ${currentUrl}`)
           await timer.delay(1000)
           let { data } = await axios.get(currentUrl)
@@ -64,11 +75,12 @@ class Publisher {
           for (let link of links) {
             let item = new URLParser(link)
             let prefixedUrl = decodeURI(decodeURI(item.prefixURL(currentUrl)))
-            if (!(await this[_results_queue].hasElement(prefixedUrl))) {
+            if (!this[_results_queue].includes(prefixedUrl) &&
+              !this[_wait_queue].includes(prefixedUrl)) {
               this[_producer].publish(prefixedUrl)
               await timer.delay(1000)
-              this[_results_queue].enqueue(encodeURI(encodeURI(prefixedUrl)))
-              this[_wait_queue].enqueue(encodeURI(encodeURI(prefixedUrl)))
+              this[_results_queue].push(encodeURI(encodeURI(prefixedUrl)))
+              this[_wait_queue].push(encodeURI(encodeURI(prefixedUrl)))
             }
           }
         }
