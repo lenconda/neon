@@ -6,7 +6,8 @@ then
   && touch ./.neon/app/wait.queue \
   && echo "[]" > ./.neon/app/wait.queue \
   && touch ./.neon/app/results.queue \
-  && echo "[]" > ./.neon/app/results.queue
+  && echo "[]" > ./.neon/app/results.queue \
+  && npm run init-publisher
 fi
 
 sleep 10s \

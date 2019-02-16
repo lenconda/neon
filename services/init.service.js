@@ -1,4 +1,4 @@
-const RedisQueue = require('../src/utils/redis_queue')
+const fs = require('fs')
 const {
   APP_SEED_URL,
   RDS_WAIT_QUEUE } = require('../src/config')
@@ -13,11 +13,10 @@ const logger = getLogger(__filename)
  * @async
  * @return {Promise<void>}
  */
-const init = async () => {
-  let queue = new RedisQueue(RDS_WAIT_QUEUE)
-  await queue.enqueue(APP_SEED_URL)
+const init = () => {
+  fs.writeFileSync('../.neon/app/wait.queue',
+    JSON.stringify([APP_SEED_URL]))
   logger.info(`init publisher queue with PID: ${process.pid}`)
-  queue.quit()
 }
 
 init()
