@@ -14,7 +14,7 @@ const logger = getLogger(__filename)
  * @return {Promise<void>}
  */
 const init = () => {
-  fs.writeFileSync('../.neon/app/wait.queue',
+  fs.writeFileSync('./.neon/app/wait.queue',
     JSON.stringify([APP_SEED_URL]))
   logger.info(`init publisher queue with PID: ${process.pid}`)
 }
