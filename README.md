@@ -248,7 +248,7 @@ Thanks for your interest in this project. You are welcomed to make contributions
 
 ### Issues
 
-As said above, before you starting your work, you should check [issue list](https://github.com/lenconda/capture/issues) first. The issue list of this project can probably contains known bugs, problems, new demands and future development plans. If you can find an issue or many issues that solves the same problem, it would be great if you can join them to solve the problem.
+As said above, before you starting your work, you should check [issue list](https://github.com/lenconda/neon/issues) first. The issue list of this project can probably contains known bugs, problems, new demands and future development plans. If you can find an issue or many issues that solves the same problem, it would be great if you can join them to solve the problem.
 
 ### Fork & Pull Requests
 
